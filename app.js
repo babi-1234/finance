@@ -15,7 +15,7 @@ var uiController = (function () {
       return {
         type: document.querySelector(DOMstrings.inputType).value, // inc, exp
         desciption: document.querySelector(DOMstrings.inputDescription).value,
-        value: document.querySelector(DOMstrings.inputValue).value,
+        value: parseInt(document.querySelector(DOMstrings.inputValue).value),
       };
     },
 
@@ -126,19 +126,21 @@ var appController = (function (uiController, financeController) {
     // 1. Оруулах өгөгдлийг дэлгэцээс олж авна.
     var input = uiController.getInput();
 
-    // 2. Олж авсан өгөгдлүүдээ санхүүгийн контроллерт дамжуулж тэнд хадгална.
-    var item = financeController.addItem(
-      input.type,
-      input.desciption,
-      input.value
-    );
+    if (input.desciption !== "" && input.value !== "") {
+      // 2. Олж авсан өгөгдлүүдээ санхүүгийн контроллерт дамжуулж тэнд хадгална.
+      var item = financeController.addItem(
+        input.type,
+        input.desciption,
+        input.value
+      );
 
-    // 3. Олж авсан өгөгдлүүдээ веб дээрээ тохирох хэсэгт нь гаргана
-    uiController.addListItem(item, input.type);
-    uiController.clearFields();
+      // 3. Олж авсан өгөгдлүүдээ веб дээрээ тохирох хэсэгт нь гаргана
+      uiController.addListItem(item, input.type);
+      uiController.clearFields();
 
-    // 4. Төсвийг тооцоолно
-    // 5. Эцсийн үлдэгдэл, тооцоог дэлгэцэнд гаргана.
+      // 4. Төсвийг тооцоолно
+      // 5. Эцсийн үлдэгдэл, тооцоог дэлгэцэнд гаргана.
+    }
   };
 
   var setupEventListeners = function () {
