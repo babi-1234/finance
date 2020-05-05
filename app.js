@@ -57,6 +57,11 @@ var uiController = (function () {
       }
     },
 
+    deleteListItem: function (id) {
+      var el = document.getElementById(id);
+      el.parentNode.removeChild(el);
+    },
+
     addListItem: function (item, type) {
       // Орлого зарлагын элементийг агуулсан html-ийг бэлтгэнэ.
       var html, list;
@@ -151,12 +156,9 @@ var financeController = (function () {
         return el.id;
       });
 
-      console.log("ids : " + ids);
       var index = ids.indexOf(id);
-      console.log("index : " + index);
 
       if (index !== -1) {
-        console.log("ustgah gj bn");
         data.items[type].splice(index, 1);
       }
     },
@@ -250,6 +252,8 @@ var appController = (function (uiController, financeController) {
           financeController.deleteItem(type, itemId);
 
           // 2. Дэлгэц дээрээс энэ элементийг устгана
+          uiController.deleteListItem(id);
+
           // 3. Үлдэгдэл тооцоог шинэчилж харуулна.
         }
       });
