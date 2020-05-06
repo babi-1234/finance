@@ -99,6 +99,17 @@ var financeController = (function () {
     this.id = id;
     this.description = description;
     this.value = value;
+    this.percentage = -1;
+  };
+
+  Expense.prototype.calcPercentage = function (totalIncome) {
+    if (totalIncome > 0)
+      this.percentage = Math.round((this.value / totalIncome) * 100);
+    else this.percentage = 0;
+  };
+
+  Expense.prototype.getPercentage = function () {
+    return this.percentage;
   };
 
   var calculateTotal = function (type) {
@@ -142,6 +153,20 @@ var financeController = (function () {
       if (data.totals.inc > 0)
         data.huvi = Math.round((data.totals.exp / data.totals.inc) * 100);
       else data.huvi = 0;
+    },
+
+    calculatePercentages: function () {
+      data.items.exp.forEach(function (el) {
+        el.calcPercentage(data.totals.inc);
+      });
+    },
+
+    getPercentages: function () {
+      var allPercentages = data.items.exp.map(function (el) {
+        return el.getPercentage();
+      });
+
+      return allPercentages;
     },
 
     tusviigAvah: function () {
@@ -223,6 +248,15 @@ var appController = (function (uiController, financeController) {
 
     // 6. Төсвийн тооцоог дэлгэцэнд гаргана.
     uiController.tusviigUzuuleh(tusuv);
+
+    // 7. Элементүүдийн хувийг тооцоолно
+    financeController.calculatePercentages();
+
+    // 8. Элементүүдийн хувийг хүлээж авна
+    var allPercentages = financeController.getPercentages();
+
+    // 9. Эдгээр хувийг дэлгэцэнд гаргана.
+    console.log(allPercentages);
   };
 
   var setupEventListeners = function () {
@@ -241,10 +275,6 @@ var appController = (function (uiController, financeController) {
     document
       .querySelector(DOM.containerDiv)
       .addEventListener("click", function (event) {
-        //console.log(event.target.id);
-        // elementiin parent
-        //console.log(event.target);
-        //event.target.parentNode.parentNode.parentNode.parentNode
         var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
         if (id) {
