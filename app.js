@@ -13,6 +13,13 @@ var uiController = (function () {
     expenseLabel: ".budget__expenses--value",
     percentageLabel: ".budget__expenses--percentage",
     containerDiv: ".container",
+    expensePercentageLabel: ".item__percentage",
+  };
+
+  var nodeListForeach = function (list, callback) {
+    for (var i = 0; i < list.length; i++) {
+      callback(list[i], i);
+    }
   };
 
   return {
@@ -22,6 +29,18 @@ var uiController = (function () {
         description: document.querySelector(DOMstrings.inputDescription).value,
         value: parseInt(document.querySelector(DOMstrings.inputValue).value),
       };
+    },
+
+    displayPercentages: function (allPercentages) {
+      // Зарлагын NodeList-ийг олох
+      var elements = document.querySelectorAll(
+        DOMstrings.expensePercentageLabel
+      );
+
+      // Элемент болгоны хувьд зарлагын хувийг массиваас авч шивж
+      nodeListForeach(elements, function (el, index) {
+        el.textContent = allPercentages[index];
+      });
     },
 
     getDOMstrings: function () {
@@ -256,7 +275,7 @@ var appController = (function (uiController, financeController) {
     var allPercentages = financeController.getPercentages();
 
     // 9. Эдгээр хувийг дэлгэцэнд гаргана.
-    console.log(allPercentages);
+    uiController.displayPercentages(allPercentages);
   };
 
   var setupEventListeners = function () {
