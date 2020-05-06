@@ -88,7 +88,9 @@ var uiController = (function () {
 
       // Элемент болгоны хувьд зарлагын хувийг массиваас авч шивж
       nodeListForeach(elements, function (el, index) {
-        el.textContent = allPercentages[index];
+        var itemPercentage = allPercentages[index];
+        el.textContent =
+          itemPercentage > 0 ? itemPercentage + "%" : itemPercentage;
       });
     },
 
