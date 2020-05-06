@@ -19,7 +19,7 @@ var uiController = (function () {
     getInput: function () {
       return {
         type: document.querySelector(DOMstrings.inputType).value, // inc, exp
-        desciption: document.querySelector(DOMstrings.inputDescription).value,
+        description: document.querySelector(DOMstrings.inputDescription).value,
         value: parseInt(document.querySelector(DOMstrings.inputValue).value),
       };
     },
@@ -195,11 +195,11 @@ var appController = (function (uiController, financeController) {
     // 1. Оруулах өгөгдлийг дэлгэцээс олж авна.
     var input = uiController.getInput();
 
-    if (input.desciption !== "" && input.value !== "") {
+    if (input.description !== "" && input.value !== "") {
       // 2. Олж авсан өгөгдлүүдээ санхүүгийн контроллерт дамжуулж тэнд хадгална.
       var item = financeController.addItem(
         input.type,
-        input.desciption,
+        input.description,
         input.value
       );
 
